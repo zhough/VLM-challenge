@@ -1,13 +1,13 @@
 # 模型配置
 model:
   model_path: "Qwen/Qwen2.5-VL-3B-Instruct"
-  extra_args:
-    load_in_4bit: true  # 必须开启，否则还是 FP16 加载
-    bnb_4bit_quant_type: "nf4"
-    bnb_4bit_use_double_quant: true
-    bnb_4bit_compute_dtype: "bfloat16"
-    device_map: "cuda"
-    trust_remote_code: true 
+  # extra_args:
+  #   load_in_4bit: true  # 必须开启，否则还是 FP16 加载
+  #   bnb_4bit_quant_type: "nf4"
+  #   bnb_4bit_use_double_quant: true
+  #   bnb_4bit_compute_dtype: "bfloat16"
+  #   device_map: "cuda"
+  #   trust_remote_code: true 
 # 数据集和预处理配置
 dataset:
   train_data_path: "/kaggle/input/vlm-challenge-dataset/vlm-challenge-B-complete/image/train"

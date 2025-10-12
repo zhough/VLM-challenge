@@ -14,11 +14,7 @@ from swift.tuners import LoraConfig
 from swift.trainers import TrainingArguments, Trainer
 
 import swanlab
-swanlab.login(api_key="Nj75sPpgjdzUONcpKxlg6")
-swanlab.init(
-    project='VLM-challenge',
-    experiment_name="finetune",
-)
+
 warnings.filterwarnings("ignore")
 logger = get_logger()
 data_seed = 42
@@ -30,8 +26,13 @@ parser.add_argument("--config", type=str, help="Path to YAML config file")
 parser.add_argument("--output_path", type=str, help="Path to save the output model")
 parser.add_argument("--local_rank", type=int, default=int(os.environ.get("LOCAL_RANK", 0)),
                     help="Distributed launcher passes this argument automatically")
-
+parser.add_argument('--swanlab_project_name',type=str,default='VLM-challenge-v1',help='swanlab项目名称')
 args, _ = parser.parse_known_args()
+swanlab.login(api_key="Nj75sPpgjdzUONcpKxlg6")
+swanlab.init(
+    project=args.swanlab_project_name,
+    experiment_name="finetune",
+)
 config_path = args.config
 output_path = args.output_path
 with open(config_path, "r", encoding="utf-8") as f:
