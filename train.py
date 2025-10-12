@@ -44,14 +44,13 @@ model, processor = get_model_tokenizer(
     #attn_impl='flash_attn', 
     MIN_PIXELS=config["generate"]["min_pixels"], 
     MAX_PIXELS=config["generate"]["max_pixels"],
-    **config['model'].get("extra_args", {})
+    **(config['model'].get("extra_args", {}))
 )
 
 SYSTEM_MESSAGE = "You are a helpful assistant."
 
 template = get_template(
     model.model_meta.template, 
-    #'qwen2.5-vl',
     processor, 
     default_system=SYSTEM_MESSAGE, 
     max_length=config["generate"]["max_length"], 
