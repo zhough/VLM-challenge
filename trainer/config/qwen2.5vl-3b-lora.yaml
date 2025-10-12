@@ -6,7 +6,7 @@ model:
     bnb_4bit_quant_type: "nf4"
     bnb_4bit_use_double_quant: true
     bnb_4bit_compute_dtype: "bfloat16"
-    device_map: "auto"
+    device_map: "cuda"
 # 数据集和预处理配置
 dataset:
   train_data_path: "/kaggle/input/vlm-challenge-dataset/vlm-challenge-B-complete/image/train"
