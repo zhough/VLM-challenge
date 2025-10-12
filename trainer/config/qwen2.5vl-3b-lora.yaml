@@ -29,9 +29,9 @@ hparams:
   max_steps: 10000
   num_train_epochs: 1
   pad_multiple_of: 16
-  log_every_steps: 100
-  eval_every_steps: 5000
-  save_every_steps: 5000
+  log_every_steps: 10
+  eval_every_steps: 500
+  save_every_steps: 500
   optim: adamw_torch
   lr_scheduler: cosine
   weight_decay: 0.01
