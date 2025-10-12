@@ -16,14 +16,14 @@ dataset:
 generate:
   max_length: 8192
   min_pixels: 200704
-  max_pixels: 1003520
+  max_pixels: 501760
 
 # 微调配置
 hparams:
-  batch_size: 1
+  batch_size: 2
   eval_batch_size: 1
-  gradient_accumulation_steps: 4
-  gradient_checkpointing: true
+  gradient_accumulation_steps: 2
+  gradient_checkpointing: false
   clip_grad_norm: 1.0
   learning_rate: 1e-4
   max_steps: 10000
