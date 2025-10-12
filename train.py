@@ -27,6 +27,8 @@ parser.add_argument("--output_path", type=str, help="Path to save the output mod
 parser.add_argument("--local_rank", type=int, default=int(os.environ.get("LOCAL_RANK", 0)),
                     help="Distributed launcher passes this argument automatically")
 parser.add_argument('--swanlab_project_name',type=str,default='VLM-challenge-v1',help='swanlab项目名称')
+parser.add_argument("--resume", type=str, default=None, 
+                        help="Path to checkpoint directory to resume training from.")
 args, _ = parser.parse_known_args()
 swanlab.login(api_key="Nj75sPpgjdzUONcpKxlg6")
 swanlab.init(
@@ -38,10 +40,14 @@ output_path = args.output_path
 with open(config_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
-# 加载模型前，打印 extra_args 是否正确读取
-print("=== 模型量化参数 ===")
-print(config['model'].get("extra_args", {}))  # 应输出 {'load_in_4bit': True, ...}
-print("===================")
+def clean_memory_after_eval(trainer, eval_results):
+    # 清理PyTorch缓存的未使用显存
+    torch.cuda.empty_cache()
+    # 清理CUDA驱动级别的缓存（更彻底）
+    if torch.cuda.is_available():
+        torch.cuda.reset_max_memory_allocated()
+        torch.cuda.reset_max_memory_cached()
+    logger.info("✅ 验证后已清理GPU显存碎片")
 
 # 加载模型和处理器
 model, processor = get_model_tokenizer(
@@ -146,5 +152,11 @@ trainer = Trainer(
     eval_dataset=eval_dataset,
     template=template,
 )
+trainer.add_callback(
+    type='evaluation',
+    func=clean_memory_after_eval,
+    trigger='after'  # 每次验证结束后执行
+)
+resume_from_checkpoint = args.resume
 
-trainer.train()
+trainer.train(resume_from_checkpoint=resume_from_checkpoint)
