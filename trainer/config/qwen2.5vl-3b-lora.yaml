@@ -28,16 +28,16 @@ generate:
 hparams:
   batch_size: 1
   eval_batch_size: 1
-  gradient_accumulation_steps: 2
+  gradient_accumulation_steps: 4
   gradient_checkpointing: true
   clip_grad_norm: 1.0
   learning_rate: 1e-4
   max_steps: 10000
-  num_train_epochs: 1
+  num_train_epochs: 2
   pad_multiple_of: 16
   log_every_steps: 10
-  eval_every_steps: 500
-  save_every_steps: 500
+  eval_every_steps: 50
+  save_every_steps: 50
   optim: adamw_torch
   lr_scheduler: cosine
   weight_decay: 0.01
