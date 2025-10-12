@@ -13,6 +13,12 @@ from swift.utils import get_logger, get_model_parameter_info
 from swift.tuners import LoraConfig
 from swift.trainers import TrainingArguments, Trainer
 
+import swanlab
+swanlab.login(api_key="Nj75sPpgjdzUONcpKxlg6")
+swanlab.init(
+    project='VLM-challenge',
+    experiment_name="finetune",
+)
 warnings.filterwarnings("ignore")
 logger = get_logger()
 data_seed = 42
