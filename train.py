@@ -43,7 +43,8 @@ model, processor = get_model_tokenizer(
     torch_dtype=torch.bfloat16, 
     #attn_impl='flash_attn', 
     MIN_PIXELS=config["generate"]["min_pixels"], 
-    MAX_PIXELS=config["generate"]["max_pixels"]
+    MAX_PIXELS=config["generate"]["max_pixels"],
+    **config['model'].get("extra_args", {})
 )
 
 SYSTEM_MESSAGE = "You are a helpful assistant."
