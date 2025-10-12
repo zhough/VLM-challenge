@@ -37,6 +37,11 @@ output_path = args.output_path
 with open(config_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
+# 加载模型前，打印 extra_args 是否正确读取
+print("=== 模型量化参数 ===")
+print(config['model'].get("extra_args", {}))  # 应输出 {'load_in_4bit': True, ...}
+print("===================")
+
 # 加载模型和处理器
 model, processor = get_model_tokenizer(
     config["model"]["model_path"], 
