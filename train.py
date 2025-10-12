@@ -12,7 +12,7 @@ from swift.llm import (
 from swift.utils import get_logger, get_model_parameter_info
 from swift.tuners import LoraConfig
 from swift.trainers import TrainingArguments, Trainer
-
+from transformers import TrainerCallback
 import swanlab
 
 warnings.filterwarnings("ignore")
@@ -40,14 +40,22 @@ output_path = args.output_path
 with open(config_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
-def clean_memory_after_eval(trainer, eval_results):
-    # 清理PyTorch缓存的未使用显存
-    torch.cuda.empty_cache()
-    # 清理CUDA驱动级别的缓存（更彻底）
-    if torch.cuda.is_available():
-        torch.cuda.reset_max_memory_allocated()
-        torch.cuda.reset_max_memory_cached()
-    logger.info("✅ 验证后已清理GPU显存碎片")
+class CleanMemoryCallback(TrainerCallback):
+    """
+    一个在每次验证（evaluation）结束后清理GPU显存的回调。
+    """
+    def on_evaluate(self, args, state, control, **kwargs):
+        """
+        在 `trainer.evaluate()` 调用结束时触发。
+        """
+        logger.info("✅ 开始清理验证后的GPU显存碎片...")
+        # 清理PyTorch缓存的未使用显存
+        torch.cuda.empty_cache()
+        # 重置最大显存记录，方便监控
+        if torch.cuda.is_available():
+            torch.cuda.reset_max_memory_allocated()
+            torch.cuda.reset_max_memory_cached()
+        logger.info("✅ 验证后GPU显存碎片清理完毕。")
 
 # 加载模型和处理器
 model, processor = get_model_tokenizer(
@@ -152,11 +160,7 @@ trainer = Trainer(
     eval_dataset=eval_dataset,
     template=template,
 )
-trainer.add_callback(
-    type='evaluation',
-    func=clean_memory_after_eval,
-    trigger='after'  # 每次验证结束后执行
-)
+trainer.add_callback(CleanMemoryCallback())
 resume_from_checkpoint = args.resume
 
 trainer.train(resume_from_checkpoint=resume_from_checkpoint)
