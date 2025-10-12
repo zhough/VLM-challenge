@@ -20,7 +20,7 @@ generate:
 
 # 微调配置
 hparams:
-  batch_size: 2
+  batch_size: 1
   eval_batch_size: 1
   gradient_accumulation_steps: 1
   gradient_checkpointing: false
