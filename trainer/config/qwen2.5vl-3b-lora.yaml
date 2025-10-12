@@ -1,0 +1,53 @@
+# 模型配置
+model:
+  model_path: "/path/to/your/Qwen2.5-VL-3B-Instruct"
+
+# 数据集和预处理配置
+dataset:
+  train_data_path: "/path/to/your/dataset/VLM-challenge/image/train"
+  train_json_path: "/path/to/your/dataset/VLM-challenge/label/train.jsonl"
+
+  valid_data_path: "/path/to/your/dataset/VLM-challenge/image/eval"
+  valid_json_path: "/path/to/your/dataset/VLM-challenge/label/eval.jsonl"
+
+  metric_for_best_model: eval_loss
+  table_format: "html"
+
+generate:
+  max_length: 8192
+  min_pixels: 200704
+  max_pixels: 1003520
+
+# 微调配置
+hparams:
+  batch_size: 1
+  eval_batch_size: 1
+  gradient_accumulation_steps: 4
+  gradient_checkpointing: true
+  clip_grad_norm: 1.0
+  learning_rate: 1e-4
+  max_steps: 10000
+  num_train_epochs: 1
+  pad_multiple_of: 16
+  log_every_steps: 100
+  eval_every_steps: 5000
+  save_every_steps: 5000
+  optim: adamw_torch
+  lr_scheduler: cosine
+  weight_decay: 0.01
+  warmup_steps: 0
+  warmup_ratio: 0.03
+  max_seq_length: 4096
+  find_unused_parameters: false
+
+# lora配置
+lora:
+  rank: 32
+  alpha: 32
+  dropout: 0.05
+  task_type: CAUSAL_LM
+  target_modules:
+      - q_proj
+      - v_proj
+
+max_workers: 16
