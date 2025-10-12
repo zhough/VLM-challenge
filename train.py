@@ -35,7 +35,7 @@ with open(config_path, "r", encoding="utf-8") as f:
 model, processor = get_model_tokenizer(
     config["model"]["model_path"], 
     torch_dtype=torch.bfloat16, 
-    attn_impl='flash_attn', 
+    #attn_impl='flash_attn', 
     MIN_PIXELS=config["generate"]["min_pixels"], 
     MAX_PIXELS=config["generate"]["max_pixels"]
 )
