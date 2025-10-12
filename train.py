@@ -44,7 +44,7 @@ SYSTEM_MESSAGE = "You are a helpful assistant."
 
 template = get_template(
     #model.model_meta.template, 
-    'qwen2.5-vl',
+    'qwen2-vl',
     processor, 
     default_system=SYSTEM_MESSAGE, 
     max_length=config["generate"]["max_length"], 
