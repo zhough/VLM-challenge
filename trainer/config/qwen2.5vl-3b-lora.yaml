@@ -15,7 +15,7 @@ dataset:
 generate:
   max_length: 8192
   min_pixels: 200704
-  max_pixels: 501760 
+  max_pixels: 376320 
 #200704 501760 100352 250880
 # 微调配置
 hparams:
