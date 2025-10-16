@@ -22,11 +22,11 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # 读取配置
 parser = argparse.ArgumentParser()
-parser.add_argument("--config", type=str, help="Path to YAML config file")
-parser.add_argument("--output_path", type=str, help="Path to save the output model")
+parser.add_argument("--config", type=str, default='./trainer/config/qwen2.5vl-3b-lora.yaml' ,help="Path to YAML config file")
+parser.add_argument("--output_path", type=str, default='./output',help="Path to save the output model")
 parser.add_argument("--local_rank", type=int, default=int(os.environ.get("LOCAL_RANK", 0)),
                     help="Distributed launcher passes this argument automatically")
-parser.add_argument('--swanlab_project_name',type=str,default='VLM-challenge-v1',help='swanlab项目名称')
+parser.add_argument('--swanlab_project_name',type=str,default='VLM-challenge-v3',help='swanlab项目名称')
 parser.add_argument("--resume", type=str, default=None, 
                         help="Path to checkpoint directory to resume training from.")
 args, _ = parser.parse_known_args()
